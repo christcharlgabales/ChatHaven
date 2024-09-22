@@ -14,7 +14,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-//Set static folder
+// Set static folder
 app.use(express.static(path.join(__dirname, "public")));
 
 const botName = "ChatHaven Bot";
@@ -29,7 +29,7 @@ io.on("connection", (socket) => {
     // Welcome current user
     socket.emit("message", formatMessage(botName, "Welcome to ChatHaven!"));
 
-    //Broadcast when a user connects
+    // Broadcast when a user connects
     socket.broadcast
       .to(user.room)
       .emit(
@@ -37,19 +37,31 @@ io.on("connection", (socket) => {
         formatMessage(botName, `${user.username} has joined the chat`)
       );
 
-    //Send users and room info
+    // Send users and room info
     io.to(user.room).emit("roomUsers", {
       room: user.room,
       users: getRoomUsers(user.room),
     });
   });
 
-  //Listen for chatMessage
+  // Listen for chatMessage
   socket.on("chatMessage", (msg) => {
     const user = getCurrentUser(socket.id);
-
     io.to(user.room).emit("message", formatMessage(user.username, msg));
   });
+
+  // Listen for typing event
+  socket.on("typing", () => {
+    const user = getCurrentUser(socket.id);
+    socket.broadcast.to(user.room).emit("typing", user.username);
+  });
+
+  // Listen for stopTyping event
+  socket.on("stopTyping", () => {
+    const user = getCurrentUser(socket.id);
+    socket.broadcast.to(user.room).emit("stopTyping", user.username);
+  });
+
   // Runs when client disconnects
   socket.on("disconnect", () => {
     const user = userLeave(socket.id);
@@ -60,7 +72,7 @@ io.on("connection", (socket) => {
         formatMessage(botName, `${user.username} has left the chat`)
       );
 
-      //Send users and room info
+      // Send users and room info
       io.to(user.room).emit("roomUsers", {
         room: user.room,
         users: getRoomUsers(user.room),
