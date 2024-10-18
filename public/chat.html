@@ -30,14 +30,19 @@
       <div id="typingIndicator" style="font-style: italic; color: gray"></div>
       <div class="chat-form-container">
         <form id="chat-form">
+          <button type="button" id="emoji-button" class="btn">
+            <i class="far fa-smile"></i>
+          </button>
           <input
             id="msg"
             type="text"
-            placeholder="Enter Message"
+            placeholder="Write a message..."
             required
             autocomplete="off"
           />
-          <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
+          <button class="btn" type="submit">
+            <i class="fas fa-paper-plane"></i>
+          </button>
         </form>
       </div>
     </div>
@@ -48,6 +53,7 @@
       referrerpolicy="no-referrer"
     ></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.0/dist/index.min.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

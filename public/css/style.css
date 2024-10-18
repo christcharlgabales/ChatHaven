@@ -115,17 +115,23 @@ a {
 .chat-form-container {
   padding: 20px 30px;
   background-color: var(--dark-color-a);
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Align items vertically */
+  justify-content: space-between; /* Space between input and button */
 }
 
 .chat-form-container form {
   display: flex;
+  width: 100%; /* Ensure the form takes full width */
 }
 
 .chat-form-container input[type="text"] {
   font-size: 16px;
   padding: 5px;
   height: 40px;
-  flex: 1;
+  flex: 1; /* Make the input flexible */
+  min-width: 0; /* Prevent overflow */
+  margin-right: 10px; /* Space between input and button */
 }
 
 /* Join Page */
@@ -180,6 +186,7 @@ a {
   width: 100%;
 }
 
+/* Media Queries for Responsive Design */
 @media (max-width: 700px) {
   .chat-main {
     display: block;
@@ -187,5 +194,19 @@ a {
 
   .chat-sidebar {
     display: none;
+  }
+
+  .chat-form-container {
+    padding: 10px; /* Reduce padding on small screens */
+  }
+
+  .chat-form-container input[type="text"] {
+    font-size: 14px; /* Adjust font size for smaller screens */
+    height: 35px; /* Reduce height */
+  }
+
+  .chat-form-container .btn {
+    padding: 5px 10px; /* Adjust button padding */
+    font-size: 14px; /* Adjust button font size */
   }
 }

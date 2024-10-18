@@ -2,6 +2,7 @@ const chatForm = document.getElementById("chat-form");
 const chatMessages = document.querySelector(".chat-messages");
 const roomName = document.getElementById("room-name");
 const userList = document.getElementById("users");
+const emojiButton = new EmojiButton(); // Initialize EmojiButton
 
 // Get username and room from URL
 const { username, room } = Qs.parse(location.search, {
@@ -9,6 +10,9 @@ const { username, room } = Qs.parse(location.search, {
 });
 
 const socket = io();
+
+// Flag to manage the first join
+let isFirstJoin = true;
 
 // Join chatroom
 socket.emit("joinRoom", { username, room });
@@ -47,6 +51,30 @@ socket.on("typing", (username) => {
 socket.on("stopTyping", (username) => {
   typingUsers.delete(username);
   outputTypingIndicators();
+});
+
+// Open emoji picker when the emoji button is clicked
+document.getElementById("emoji-button").addEventListener("click", (e) => {
+  emojiButton.togglePicker(e.target); // Toggle the emoji picker
+});
+
+// Keep the picker open until the user clicks outside
+document.addEventListener("click", (event) => {
+  const emojiPicker = document.querySelector(".emoji-button"); // Adjust the selector as necessary
+
+  // Check if the click was outside the emoji picker and emoji button
+  if (
+    emojiPicker &&
+    !emojiPicker.contains(event.target) &&
+    !document.getElementById("emoji-button").contains(event.target)
+  ) {
+    emojiButton.hidePicker(); // Hide the picker if clicked outside
+  }
+});
+
+// Insert selected emoji into the input field
+emojiButton.on("emoji", (emoji) => {
+  chatForm.elements.msg.value += emoji; // Append emoji to the message input
 });
 
 // Message submit

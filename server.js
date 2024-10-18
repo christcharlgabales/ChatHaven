@@ -23,7 +23,6 @@ const botName = "ChatHaven Bot";
 io.on("connection", (socket) => {
   socket.on("joinRoom", ({ username, room }) => {
     const user = userJoin(socket.id, username, room);
-
     socket.join(user.room);
 
     // Welcome current user
@@ -81,5 +80,5 @@ io.on("connection", (socket) => {
   });
 });
 
-const PORT = 3000 || process.env.PORT;
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
